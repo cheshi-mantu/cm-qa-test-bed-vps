@@ -1,5 +1,8 @@
 #!/bin/bash
 
+#use following to update the repo from github
+#git fetch && git reset --hard HEAD &&git merge '@{u}'
+
 echo "Script should be started under root user"
 
 #creating new log file
@@ -81,69 +84,42 @@ apt install default-jdk -y |& tee -a ${LOG_FILE_NAME}
 
 echo "$(date) $(java --version)" |& tee -a ${LOG_FILE_NAME}
 
-# echo "Curent Java version is $(java --version)" >> ${LOG_FILE_NAME}
+echo "Curent Java version is $(java --version)" |& tee -a ${LOG_FILE_NAME}
 
-# echo "Updating repos, upgrading installed software"
-# #apt update && apt upgrade -y
+echo "Updating repos, upgrading installed software"
 
-# echo "Installing Midnight Commander"
-# #apt install mc -y
+cat << EOF >> /etc/environment
+JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
+EOF
 
-# echo "Installed midnight commander" >> ${LOG_FILE_NAME}
+source /etc/environment
 
-# echo "Installing default JDK"
+echo "$(date) Checking JAVA_HOME is set" |& tee -a ${LOG_FILE_NAME}
+echo "$(date) echo JAVA_HOME is set to $(echo $JAVA_HOME)" |& tee -a ${LOG_FILE_NAME}
 
-# apt install default-jdk -y
+echo "$(date) Downloading script for the docker's installation and running it" |& tee -a ${LOG_FILE_NAME}
 
-# echo "java --version is $(java --version)"
-# echo "$(date) java --version is $(java --version)" >> ${LOG_FILE_NAME}
+curl -sSL https://get.docker.com | sh
 
-# echo "Curent Java version is $(java --version)" >> ${LOG_FILE_NAME}
+docker version |& tee -a ${LOG_FILE_NAME}
+
+groupadd docker |& tee -a ${LOG_FILE_NAME}
+usermod -aG docker $NEW_USER |& tee -a ${LOG_FILE_NAME}
+newgrp docker |& tee -a ${LOG_FILE_NAME}
+
+echo "$(date) Installing docker-comose..." |& tee -a ${LOG_FILE_NAME}
+curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+chmod +x /usr/local/bin/docker-compose |& tee -a ${LOG_FILE_NAME}
+
+echo "$(date) Checking docker-compose version"
+
+docker-compose version |& tee -a ${LOG_FILE_NAME}
+
+cp -r ./test-bed /home/${NEW_USER} |& tee -a ${LOG_FILE_NAME}
+
+chown -R ${NEW_USER}:users /home/${NEW_USER}/test-bed |& tee -a ${LOG_FILE_NAME}
 
 
-# cat << EOF >> /etc/environment
-# JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
-# EOF
-# source /etc/environment
-
-# echo "Checking JAVA_HOME is set"
-# echo "echo JAVA_HOME output is $(echo $JAVA_HOME)"
-# echo "$(date) JAVA_HOME is set to ${JAVA_HOME}" >> ${LOG_FILE_NAME}
-
-# echo "Downloading script for the docker's installation and running it"
-# curl -sSL https://get.docker.com | sh
-# docker version
-
-# docker version >> ${LOG_FILE_NAME}
-
-# echo 
-# groupadd docker >> ${LOG_FILE_NAME}
-# usermod -aG docker $NEW_USER >> ${LOG_FILE_NAME}
-# newgrp docker >> ${LOG_FILE_NAME}
-
-# echo "Installing docker-comose..."
-# curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-# chmod +x /usr/local/bin/docker-compose
-
-# echo "Checking docker-compose version"
-# docker-compose version
-
-# echo "Checking docker-compose version" >> ${LOG_FILE_NAME}
-
-# docker-compose version >> ${LOG_FILE_NAME}
-
-# mkdir /home/${NEW_USER}/test-bed
-# mkdir /home/${NEW_USER}/test-bed/init
-# mkdir /home/${NEW_USER}/test-bed/init/selenoid
-# mkdir /home/${NEW_USER}/test-bed/work
-
-# curl -L https://github.com/cheshi-mantu/cm-qa-test-bed-vps/blob/main/test-bed/init/selenoid/browsers.json -o /home/${NEW_USER}/test-bed/init/selenoid/browsers.json
-
-# curl -L https://github.com/cheshi-mantu/cm-qa-test-bed-vps/blob/main/test-bed/docker-compose.yml -o /home/${NEW_USER}/test-bed/docker-compose.yml
-
-# chown -R ${NEW_USER}:users /home/${NEW_USER}/test-bed
-
-# runuser -l ${NEW_USER} -c 'cd ~/ && git clone https://github.com/cheshi-mantu/cm-qa-test-bed-vps.git test-bed'
 # runuser -l ${NEW_USER} -c 'cd ~/test-bed/test-bed && docker-compose up -d'
 # echo "This is your initial Jenkins admin password" 
 
