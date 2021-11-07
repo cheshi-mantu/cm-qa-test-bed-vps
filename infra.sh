@@ -104,8 +104,8 @@ curl -sSL https://get.docker.com | sh
 docker version |& tee -a ${LOG_FILE_NAME}
 
 groupadd docker |& tee -a ${LOG_FILE_NAME}
-usermod -aG docker $NEW_USER |& tee -a ${LOG_FILE_NAME}
-newgrp docker |& tee -a ${LOG_FILE_NAME}
+usermod -aG docker
+newgrp docker
 
 echo "$(date) Installing docker-comose..." |& tee -a ${LOG_FILE_NAME}
 curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
@@ -113,29 +113,32 @@ chmod +x /usr/local/bin/docker-compose |& tee -a ${LOG_FILE_NAME}
 
 echo "$(date) Checking docker-compose version"
 
-docker-compose version |& tee -a ${LOG_FILE_NAME}
+docker-compose version
 
 cp -r ./test-bed /home/${NEW_USER} |& tee -a ${LOG_FILE_NAME}
 
 chown -R ${NEW_USER}:users /home/${NEW_USER}/test-bed |& tee -a ${LOG_FILE_NAME}
 
+# Pulling chrome images for selenoid
 
-# runuser -l ${NEW_USER} -c 'cd ~/test-bed/test-bed && docker-compose up -d'
-# echo "This is your initial Jenkins admin password" 
+echo "Pulling chrome images for selenoid" |& tee -a ${LOG_FILE_NAME}
 
-# JENKINS_PASSWORD= $(docker exec -t test-bed_jenkins_1 cat /var/jenkins_home/secrets/initialAdminPassword)
+CHROME_RELEASES="93 94 95"
 
-# echo "This is your initial Jenkins admin password: ${JENKINS_PASSWORD}" >> ${LOG_FILE_NAME}
+for RELEASE in $CHROME_RELEASES
+do
+    echo "Pulling chrome ${RELEASE}.0" |& tee -a ${LOG_FILE_NAME}
+    docker pull selenoid/vnc:chrome_${RELEASE}.0
+done
 
+runuser -l ${NEW_USER} -c 'cd ~/test-bed && docker-compose up -d'
+echo "This is your initial Jenkins admin password" 
 
-# echo "Pulling chrome images for selenoid"
-# CHROME_RELEASES="93 94 95"
+JENKINS_PASSWORD= $(docker exec -t test-bed_jenkins_1 cat /var/jenkins_home/secrets/initialAdminPassword)
 
-# for RELEASE in $CHROME_RELEASES
-# do
-#     echo "Pulling chrome ${RELEASE}.0"
-#     docker pull selenoid/vnc:chrome_${RELEASE}.0
-# done
+echo "This is your initial Jenkins admin password: ${JENKINS_PASSWORD}" |& tee -a ${LOG_FILE_NAME}
+
+echo "Selenoid's status: $(curl ${IP_ADDRESS}:4444/wd/hub) "
 
 
 # echo
