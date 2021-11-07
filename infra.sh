@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# echo "Script should be started as root user"
+echo "Script should be started under root user"
 
 #creating new log file
 LOG_FILE_NAME=exec-log.txt
@@ -8,70 +8,78 @@ LOG_FILE_NAME=exec-log.txt
 echo "$(date) log file has been created" > ${LOG_FILE_NAME}
 echo "Log file ${LOG_FILE_NAME} has been created."
 
+IP_ADDRESS=$(https://ipv4.icanhazip.com/)
+
+echo "$(date) IP address of this machine ${IP_ADDRESS}" |& tee -a ${LOG_FILE_NAME}
+
+# echo "$(date) IP address of this machine ${IP_ADDRESS}"
+
 # Creating the password for the user root
+
 echo "#########################################################"
 echo "We would need to create a new password for you, $(whoami)"
 echo "#########################################################"
 
-read -p "Please enter new password for your account: " NEW_PASS
-echo $NEW_PASS
+read -p "Please enter new password for your account: " ROOT_PASS
+echo $ROOT_PASS
 
-echo "Created new password for $(whoami) = ${NEW_PASS}" >> ${LOG_FILE_NAME}
+echo "Created new password for $(whoami) = ${ROOT_PASS}" |& tee -a ${LOG_FILE_NAME}
 
-echo -e "${NEW_PASS}\n${NEW_PASS}\n" | passwd
+echo -e "${ROOT_PASS}\n${ROOT_PASS}\n" | passwd
+
+clear
 
 echo "We are going to create a new user now."
+echo "Everything you will do with your test bed needs to be done under user we are going to create!"
 
-sleep 5
+sleep 3
 
-# read -p "Please enter new user's name: " NEW_USER
+read -p "Please enter new user's name: " NEW_USER
 
-# useradd -m -g users ${NEW_USER}
-# echo "$(date) Added user ${NEW_USER}" >> ${LOG_FILE_NAME}
+useradd -m -g users ${NEW_USER}
+echo "$(date) Added user ${NEW_USER}" |& tee -a ${LOG_FILE_NAME}
 
-# echo "Adding ${NEW_USER} to sudoers"
-# usermod -aG sudo ${NEW_USER}
+echo "Adding ${NEW_USER} to sudoers"
+usermod -aG sudo ${NEW_USER}
 
-# echo "$(date) Added user ${NEW_USER} to sudoers" >> ${LOG_FILE_NAME}
+echo "$(date) Added user ${NEW_USER} to sudoers" |& tee -a ${LOG_FILE_NAME}
 
-# read -p "We need to create a new password for ${NEW_USER}: " NEW_USER_PASS
+read -p "We need to create a new password for ${NEW_USER}: " NEW_USER_PASS
 
-# echo -e "${NEW_USER_PASS}\n${NEW_USER_PASS}\n" | passwd ${NEW_USER}
+echo -e "${NEW_USER_PASS}\n${NEW_USER_PASS}\n" | passwd ${NEW_USER}
 
-# echo "$(date) new password for ${NEW_USER} created ${NEW_USER_PASS} " >> ${LOG_FILE_NAME}
+echo "$(date) new password for ${NEW_USER} created ${NEW_USER_PASS} " |& tee -a ${LOG_FILE_NAME}
 
-# echo "Listing the /home directory "
-# ls /home/
+echo "Listing the /home directory" |& tee -a ${LOG_FILE_NAME}
+ls /home/ |& tee -a ${LOG_FILE_NAME}
 
-# echo "Adding authorized keys to /home/${NEW_USER})"
-# cp -a /root/.ssh /home/${NEW_USER}
+echo "Adding authorized keys to /home/${NEW_USER})"
+cp -a /root/.ssh /home/${NEW_USER}
 
-# echo "$(date) $(ls -a /home/${NEW_USER}/.ssh) has been added from root"
+echo "$(date) $(ls -a /home/${NEW_USER}/.ssh) has been added from root" |& tee -a ${LOG_FILE_NAME}
 
-# echo "$(date) $(ls -a /home/${NEW_USER}/.ssh) has been added" >> ${LOG_FILE_NAME}
-# echo "$(date) Current ownership over $(ls -lr /home/${NEW_USER}/.ssh)" >> ${LOG_FILE_NAME}
+echo "$(date) Current ownership over $(ls -lr /home/${NEW_USER}/.ssh)" |& tee -a ${LOG_FILE_NAME}
 
-# echo "Now updating the ownership over /home/${NEW_USER}/.ssh"
+echo "$(date) updating the ownership over /home/${NEW_USER}/.ssh" |& tee -a ${LOG_FILE_NAME}
 
-# chown -R ${NEW_USER}:users /home/${NEW_USER}/.ssh
+chown -R ${NEW_USER}:users /home/${NEW_USER}/.ssh
 
-# echo "$(date) Ownership over $(ls -a /home/${NEW_USER}/.ssh) has been updated" >> ${LOG_FILE_NAME}
-# echo "$(date) Ownership over $(ls -lr /home/${NEW_USER}/.ssh) has been updated" >> ${LOG_FILE_NAME}
+echo "$(date) ownership over $(ls -a /home/${NEW_USER}/.ssh) has been updated" |& tee -a ${LOG_FILE_NAME}
 
-# # installing new software
+# installing new software
 
-# echo "Updating repos, upgrading installed software"
-# #apt update && apt upgrade -y
+echo "Updating repos, upgrading installed software"
+apt update && apt upgrade -y |& tee -a ${LOG_FILE_NAME}
 
-# echo "Installing Midnight Commander"
-# #apt install mc -y
+echo "$(date) Installing Midnight Commander"
 
-# echo "Installed midnight commander" >> ${LOG_FILE_NAME}
+apt install mc -y |& tee -a ${LOG_FILE_NAME}
 
-# echo "Installing default JDK"
+echo "$(date) Installing default JDK" |& tee -a ${LOG_FILE_NAME}
 
-# apt install default-jdk -y >> ${LOG_FILE_NAME}
-# java --version
+apt install default-jdk -y |& tee -a ${LOG_FILE_NAME}
+
+echo "$(date) $(java --version)" |& tee -a ${LOG_FILE_NAME}
 
 # echo "Curent Java version is $(java --version)" >> ${LOG_FILE_NAME}
 
