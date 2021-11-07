@@ -3,6 +3,10 @@
 #use following to update the repo from github
 #git fetch && git reset --hard HEAD &&git merge '@{u}'
 
+# deleting a user
+# killall -u $1 && userdel -f $1 && userdel -r $1
+# userdel -rfRZ $1
+
 echo "Script should be started under root user"
 
 #creating new log file
@@ -101,17 +105,17 @@ echo "$(date) Downloading script for the docker's installation and running it" |
 
 curl -sSL https://get.docker.com | sh
 
-docker version |& tee -a ${LOG_FILE_NAME}
+docker version >> ${LOG_FILE_NAME}
 
-groupadd docker |& tee -a ${LOG_FILE_NAME}
+groupadd docker
 usermod -aG docker
 newgrp docker
 
-echo "$(date) Installing docker-comose..." |& tee -a ${LOG_FILE_NAME}
+echo "$(date) Installing docker-compose..." |& tee -a ${LOG_FILE_NAME}
 curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-chmod +x /usr/local/bin/docker-compose |& tee -a ${LOG_FILE_NAME}
+chmod +x /usr/local/bin/docker-compose
 
-echo "$(date) Checking docker-compose version"
+echo "$(date) Checking docker-compose version" |& tee -a ${LOG_FILE_NAME}
 
 docker-compose version
 
