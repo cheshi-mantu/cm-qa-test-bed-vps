@@ -8,7 +8,7 @@ LOG_FILE_NAME=exec-log.txt
 echo "$(date) log file has been created" > ${LOG_FILE_NAME}
 echo "Log file ${LOG_FILE_NAME} has been created."
 
-IP_ADDRESS=$(https://ipv4.icanhazip.com/)
+IP_ADDRESS=$(curl https://ipv4.icanhazip.com/)
 
 echo "$(date) IP address of this machine ${IP_ADDRESS}" |& tee -a ${LOG_FILE_NAME}
 
