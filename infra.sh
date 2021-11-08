@@ -154,3 +154,6 @@ echo "Now, try to open Jenkins at: http://{$IP_ADDRESS}:8888"
 
 echo "QA test bed setup has been completed"
 echo "Now, you need to configure Jenkins and you are ready to go."
+echo "1. Stop your test bed"
+echo "2. Log-in as ${NEW_USER} with password ${NEW_USER_PASSWORD}"
+echo "3. Start test bed with `docker-compose up -d` command"
