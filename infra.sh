@@ -153,3 +153,4 @@ echo "Now, try to open Jenkins at: http://{$IP_ADDRESS}:8888"
 
 
 echo "QA test bed setup has been completed"
+echo "Now, you need to configure Jenkins and you are ready to go."
