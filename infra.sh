@@ -136,17 +136,20 @@ do
 done
 
 runuser -l ${NEW_USER} -c 'cd ~/test-bed && docker-compose up -d'
-echo "This is your initial Jenkins admin password" 
+
+echo "Waiting 60 seconds for jenkins to start up."
+
+sleep 60
+
+clear
 
 JENKINS_PASSWORD= $(docker exec -t test-bed_jenkins_1 cat /var/jenkins_home/secrets/initialAdminPassword)
 
 echo "This is your initial Jenkins admin password: ${JENKINS_PASSWORD}" |& tee -a ${LOG_FILE_NAME}
 
-echo "Selenoid's status: $(curl ${IP_ADDRESS}:4444/wd/hub) "
+echo "Selenoid's status: $(curl ${IP_ADDRESS}:4444/wd/hub)"|& tee -a ${LOG_FILE_NAME}
+
+echo "Now, try to open Jenkins at: http://{$IP_ADDRESS}:8888"
 
 
-# echo
-
-# echo "checking selenoid is up" 
-
-# https://ipv4.icanhazip.com/
+echo "QA test bed setup has been completed"
