@@ -108,7 +108,7 @@ curl -sSL https://get.docker.com | sh
 docker version >> ${LOG_FILE_NAME}
 
 groupadd docker
-usermod -aG docker
+usermod -aG docker ${NEW_USER}
 newgrp docker
 
 echo "$(date) Installing docker-compose..." |& tee -a ${LOG_FILE_NAME}
@@ -143,17 +143,18 @@ sleep 60
 
 clear
 
-JENKINS_PASSWORD= $(docker exec -t test-bed_jenkins_1 cat /var/jenkins_home/secrets/initialAdminPassword)
+JENKINS_PASSWORD=$(docker exec -t test-bed_jenkins_1 cat /var/jenkins_home/secrets/initialAdminPassword)
 
 echo "This is your initial Jenkins admin password: ${JENKINS_PASSWORD}" |& tee -a ${LOG_FILE_NAME}
 
-echo "Selenoid's status: $(curl ${IP_ADDRESS}:4444/wd/hub)"|& tee -a ${LOG_FILE_NAME}
+echo "Selenoid's status: $(curl $IP_ADDRESS:4444/wd/hub/status)"|& tee -a ${LOG_FILE_NAME}
+echo "Selenoid's UI status: $(curl $IP_ADDRESS:8080/status)"|& tee -a ${LOG_FILE_NAME}
 
-echo "Now, try to open Jenkins at: http://{$IP_ADDRESS}:8888"
+echo "Now, try to open Jenkins at: http://$IP_ADDRESS:8888"
 
 
 echo "QA test bed setup has been completed"
 echo "Now, you need to configure Jenkins and you are ready to go."
 echo "1. Stop your test bed"
 echo "2. Log-in as ${NEW_USER} with password ${NEW_USER_PASSWORD}"
-echo "3. Start test bed with `docker-compose up -d` command"
+echo "3. Start test bed with docker-compose up -d command"
