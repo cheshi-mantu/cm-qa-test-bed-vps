@@ -11,6 +11,9 @@ echo "Script should be started under root user"
 
 #creating new log file
 LOG_FILE_NAME=exec-log.txt
+# just out of curiocity< how long will it take
+TIME_START=$(date)
+
 
 echo "$(date) log file has been created" > ${LOG_FILE_NAME}
 echo "Log file ${LOG_FILE_NAME} has been created."
@@ -164,6 +167,8 @@ echo
 echo "Now, try to open Jenkins at: http://$IP_ADDRESS:8888 and use $JENKINS_PASSWORD"
 
 
+TIME_END=$(date)
+
 echo "QA test bed setup has been completed"
 echo "Now, you need to configure Jenkins and you are ready to go."
 echo "1. Stop your test bed with docker-compose down (you need to be in the folder with the configs to do that)"
@@ -172,12 +177,18 @@ echo "3. Start test bed with docker-compose up -d command"
 
 echo "What's done:"
 echo "Root's password has been updated to '${ROOT_PASS}'"
-echo "New user $NEW_USER has been created with the password '${NEW_USER_PASS}'"
+echo "New user '${NEW_USER}' has been created with the password '${NEW_USER_PASS}'"
 echo "Test bed files are here: /home/$NEW_USER/test-bed" |& tee -a ${LOG_FILE_NAME}
-echo "docker and docker-compose are installed"
 echo "jenkins, selenoid, selenoid-ui docker images were downloaded and started"
-echo "jenkins application port is 8888" |& tee -a ${LOG_FILE_NAME}
-echo "selenoid application port is 4444" |& tee -a ${LOG_FILE_NAME}
-echo "selenoid-ui application port is 8080" |& tee -a ${LOG_FILE_NAME}
+echo "jenkins application ${IP_ADDRESS}:8888" |& tee -a ${LOG_FILE_NAME}
+echo "selenoid application ${IP_ADDRESS}:4444/wd/hub" |& tee -a ${LOG_FILE_NAME}
+echo "selenoid-ui application ${IP_ADDRESS}:8080" |& tee -a ${LOG_FILE_NAME}
 
 echo "All logs of this script are stored in '${LOG_FILE_NAME}', so if you missed something, check the log"
+
+echo "Now, you need to close the connection - 'exit'"
+echo "Log in as '${NEW_USER}' with the password '${NEW_USER_PASS}' via ssh ${NEW_USER}@${IP_ADDRESS}"
+
+
+echo "Started:  $TIME_START" |& tee -a ${LOG_FILE_NAME}
+echo "Finished: $TIME_END" |& tee -a ${LOG_FILE_NAME}
