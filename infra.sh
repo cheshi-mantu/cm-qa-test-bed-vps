@@ -109,7 +109,7 @@ docker version >> ${LOG_FILE_NAME}
 
 groupadd docker
 usermod -aG docker ${NEW_USER}
-newgrp docker
+runuser -l ${NEW_USER} -c 'newgrp docker'
 
 echo "$(date) Installing docker-compose..." |& tee -a ${LOG_FILE_NAME}
 curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
