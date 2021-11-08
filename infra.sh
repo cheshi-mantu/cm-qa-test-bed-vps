@@ -109,7 +109,7 @@ docker version >> ${LOG_FILE_NAME}
 
 groupadd docker
 usermod -aG docker ${NEW_USER}
-runuser -l ${NEW_USER} -c 'newgrp docker'
+newgrp docker
 
 echo "$(date) Installing docker-compose..." |& tee -a ${LOG_FILE_NAME}
 curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
@@ -146,15 +146,38 @@ clear
 JENKINS_PASSWORD=$(docker exec -t test-bed_jenkins_1 cat /var/jenkins_home/secrets/initialAdminPassword)
 
 echo "This is your initial Jenkins admin password: ${JENKINS_PASSWORD}" |& tee -a ${LOG_FILE_NAME}
+echo
+echo
+echo
+echo
 
 echo "Selenoid's status: $(curl $IP_ADDRESS:4444/wd/hub/status)"|& tee -a ${LOG_FILE_NAME}
+
+echo
+echo
+echo
 echo "Selenoid's UI status: $(curl $IP_ADDRESS:8080/status)"|& tee -a ${LOG_FILE_NAME}
 
-echo "Now, try to open Jenkins at: http://$IP_ADDRESS:8888"
+echo
+echo
+echo
+echo "Now, try to open Jenkins at: http://$IP_ADDRESS:8888 and use $JENKINS_PASSWORD"
 
 
 echo "QA test bed setup has been completed"
 echo "Now, you need to configure Jenkins and you are ready to go."
-echo "1. Stop your test bed"
+echo "1. Stop your test bed with docker-compose down (you need to be in the folder with the configs to do that)"
 echo "2. Log-in as ${NEW_USER} with password ${NEW_USER_PASSWORD}"
 echo "3. Start test bed with docker-compose up -d command"
+
+echo "What's done:"
+echo "Root's password has been updated to '${ROOT_PASS}'"
+echo "New user $NEW_USER has been created with the password '${NEW_USER_PASS}'"
+echo "Test bed files are here: /home/$NEW_USER/test-bed" |& tee -a ${LOG_FILE_NAME}
+echo "docker and docker-compose are installed"
+echo "jenkins, selenoid, selenoid-ui docker images were downloaded and started"
+echo "jenkins application port is 8888" |& tee -a ${LOG_FILE_NAME}
+echo "selenoid application port is 4444" |& tee -a ${LOG_FILE_NAME}
+echo "selenoid-ui application port is 8080" |& tee -a ${LOG_FILE_NAME}
+
+echo "All logs of this script are stored in '${LOG_FILE_NAME}', so if you missed something, check the log"
