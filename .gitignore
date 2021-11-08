@@ -3,3 +3,4 @@
 !selenoid/
 !work/
 ./vscode/
+.vscode/settings.json
