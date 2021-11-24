@@ -118,6 +118,15 @@ echo "$(date) Checking docker-compose version" |& tee -a ${LOG_FILE_NAME}
 
 docker-compose version
 
+echo "Installing pip3"
+
+apt install python3-pip |& tee -a ${LOG_FILE_NAME}
+
+echo "Installing pytest"
+
+pip3 install pytest |& tee -a ${LOG_FILE_NAME}
+echo "Installing allure framework for pytest"
+pip3 install allure-pytest |& tee -a ${LOG_FILE_NAME}
 
 echo "This server's IP address: $IP_ADDRESS"
 echo
