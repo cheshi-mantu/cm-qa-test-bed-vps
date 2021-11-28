@@ -120,7 +120,7 @@ docker-compose version
 
 echo "Installing pip3"
 
-apt install python3-pip |& tee -a ${LOG_FILE_NAME}
+apt install python3-pip -y |& tee -a ${LOG_FILE_NAME}
 
 echo "Installing pytest"
 
