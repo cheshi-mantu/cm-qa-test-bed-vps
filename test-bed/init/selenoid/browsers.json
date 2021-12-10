@@ -1,25 +1,25 @@
 {
     "chrome": {
-      "default": "93.0",
-      "versions": {
-        "93.0": {
-          "env" : ["LANG=ru_RU.UTF-8", "LANGUAGE=ru:en", "LC_ALL=ru_RU.UTF-8", "TZ=Europe/Moscow"],
-          "image": "selenoid/vnc:chrome_75.0",
-          "tmpfs": {"/tmp": "size=512m"},
-          "port": "4444"
-        },
-        "94.0": {
-          "env": ["LANG=ru_RU.UTF-8", "LANGUAGE=ru:en", "LC_ALL=ru_RU.UTF-8", "TZ=Europe/Moscow"],
-          "image": "selenoid/vnc:chrome_76.0",
-          "tmpfs": {"/tmp": "size=512m"},
-          "port": "4444"
-        },
-        "95.0": {
-          "env" : ["LANG=ru_RU.UTF-8", "LANGUAGE=ru:en", "LC_ALL=ru_RU.UTF-8", "TZ=Europe/Moscow"],
-          "image": "selenoid/vnc:chrome_87.0",
-          "tmpfs": {"/tmp": "size=512m"},
-          "port": "4444"
+        "default": "95.0",
+        "versions": {
+            "93.0": {
+                "env": ["LANG=ru_RU.UTF-8", "LANGUAGE=ru:en", "LC_ALL=ru_RU.UTF-8", "TZ=Europe/Moscow"],
+                "image": "selenoid/vnc:chrome_93.0",
+                "tmpfs": { "/tmp": "size=512m" },
+                "port": "4444"
+            },
+            "94.0": {
+                "env": ["LANG=ru_RU.UTF-8", "LANGUAGE=ru:en", "LC_ALL=ru_RU.UTF-8", "TZ=Europe/Moscow"],
+                "image": "selenoid/vnc:chrome_94.0",
+                "tmpfs": { "/tmp": "size=512m" },
+                "port": "4444"
+            },
+            "95.0": {
+                "env": ["LANG=ru_RU.UTF-8", "LANGUAGE=ru:en", "LC_ALL=ru_RU.UTF-8", "TZ=Europe/Moscow"],
+                "image": "selenoid/vnc:chrome_95.0",
+                "tmpfs": { "/tmp": "size=512m" },
+                "port": "4444"
+            }
         }
-      }
     }
-  }
+}
