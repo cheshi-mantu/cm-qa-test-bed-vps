@@ -38,7 +38,7 @@ Interface's name will be used in  `/etc/wireguard/wg0.conf` config file on furth
 nano /etc/wireguard/wg0.conf
 ```
 
-### Udpdating wg0.conf
+### Updating wg0.conf
 
 ```shell
 [Interface]
@@ -68,43 +68,54 @@ systemctl status wg-quick@wg0.service
 
 ## Client side set-up
 
-Создаём ключи клиента:
-wg genkey | tee /etc/wireguard/goloburdin_privatekey | wg pubkey | tee /etc/wireguard/goloburdin_publickey
+### Create client keys on server side
 
-Добавляем в конфиг сервера клиента:
-vim /etc/wireguard/wg0.conf
+```shell
+wg genkey | tee /etc/wireguard/username_privatekey | wg pubkey | tee /etc/wireguard/username_publickey
+```
 
+### Adding client key to Server's Wireguard config
+
+```shell
+nano /etc/wireguard/wg0.conf
+```
+
+add the following to the newly created file
+
+```shell
 [Peer]
-PublicKey = <goloburdin_publickey>
+PublicKey = <username_publickey>
 AllowedIPs = 10.0.0.2/32
+```
 
-Вместо <goloburdin_publickey> — заменяем на содержимое файла /etc/wireguard/goloburdin_publickey
+<username_publickey> is the content of  `/etc/wireguard/username_publickey`
 
-Перезагружаем systemd сервис с wireguard:
+### Restart server's systemd with wireguard
+
+```shell
 systemctl restart wg-quick@wg0
 systemctl status wg-quick@wg0
+```
 
-На локальной машине (например, на ноутбуке) создаём текстовый файл с конфигом клиента:
+### Local machine (client) settings file creation
 
-vim goloburdin_wb.conf
+Create a text file `username_wireguard.conf`
 
+Add the following strings to the newly created `username_wireguard.conf`:
+
+```shell
 [Interface]
-PrivateKey = <CLIENT-PRIVATE-KEY>
+PrivateKey = <content of /etc/wireguard/username_privatekey>
 Address = 10.0.0.2/32
 DNS = 8.8.8.8
 
 [Peer]
-PublicKey = <SERVER-PUBKEY>
+PublicKey = <content of /etc/wireguard/publickey>
 Endpoint = <SERVER-IP>:51830
 AllowedIPs = 0.0.0.0/0
 PersistentKeepalive = 20
+```
 
-Здесь <CLIENT-PRIVATE-KEY> заменяем на приватный ключ клиента, то есть содержимое файла /etc/wireguard/goloburdin_privatekey на сервере. <SERVER-PUBKEY> заменяем на публичный ключ сервера, то есть на содержимое файла /etc/wireguard/publickey на сервере. <SERVER-IP> заменяем на IP сервера.
+### Setting up the wireguard desktop client
 
-Этот файл открываем в Wireguard клиенте (есть для всех операционных систем, в том числе мобильных) — и жмем в клиенте кнопку подключения.
-
-
-
-
-wg genkey | tee /etc/wireguard/victor_privatekey | wg pubkey | tee /etc/wireguard/victor_publickey
-wg genkey | tee /etc/wireguard/serginello_privatekey | wg pubkey | tee /etc/wireguard/serginello_publickey
+Open username_wireguard.conf in Wireguard desktop client and add the config by selecting `username_wireguard.conf` file.
