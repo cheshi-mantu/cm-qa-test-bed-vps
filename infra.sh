@@ -115,8 +115,11 @@ usermod -aG docker ${NEW_USER}
 #newgrp docker
 
 echo "$(date) Installing docker-compose..." |& tee -a ${LOG_FILE_NAME}
-curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-chmod +x /usr/local/bin/docker-compose
+#curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+#chmod +x /usr/local/bin/docker-compose
+
+apt-get install docker-compose
+
 
 echo "$(date) Checking docker-compose version" |& tee -a ${LOG_FILE_NAME}
 
@@ -127,7 +130,7 @@ echo "$(date) Installing docker compose as docker plug-in..." |& tee -a ${LOG_FI
 
 DOCKER_CONFIG=${DOCKER_CONFIG:-$HOME/.docker}
 mkdir -p $DOCKER_CONFIG/cli-plugins
-curl -SL https://github.com/docker/compose/releases/download/v2.4.1/docker-compose-linux-x86_64 -o $DOCKER_CONFIG/cli-plugins/docker-compose
+curl -SL https://github.com/docker/compose/releases/download/v2.5.0/docker-compose-linux-x86_64 -o $DOCKER_CONFIG/cli-plugins/docker-compose
 
 chmod +x $DOCKER_CONFIG/cli-plugins/docker-compose
 sudo chmod +x /usr/local/lib/docker/cli-plugins/docker-compose
