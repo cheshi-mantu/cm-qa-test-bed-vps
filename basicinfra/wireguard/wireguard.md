@@ -31,6 +31,7 @@ ip a
 ```
 
 Let's assume you have eth0
+
 Interface's name will be used in  `/etc/wireguard/wg0.conf` config file on further steps
 
 ### Creating wg0.conf
