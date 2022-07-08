@@ -14,4 +14,6 @@ cp ${PWD}/allure-docker-compose/env-example ~/allure-testops/.env && \
 cp -r ${PWD}/allure-docker-compose/configs ~/allure-testops/ && \
 cd ~/allure-testops
 
+docker login -u qametaaccess -p $(cat token.txt)
+
 docker compose pull && docker compose up -d && docker compose logs -f 
