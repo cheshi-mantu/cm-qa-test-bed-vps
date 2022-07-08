@@ -1,5 +1,6 @@
 #!/bin/bash
 
+cd ~
 apt update && apt upgrade -y && apt install docker.io -y
 export DOCKER_CONFIG=${DOCKER_CONFIG:-$HOME/.docker}
 mkdir -p $DOCKER_CONFIG/cli-plugins
