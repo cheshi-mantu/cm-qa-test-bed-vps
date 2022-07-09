@@ -14,6 +14,8 @@ cp ${PWD}/allure-docker-compose/env-example ~/allure-testops/.env && \
 cp -r ${PWD}/allure-docker-compose/configs ~/allure-testops/ && \
 cd ~/allure-testops
 
-docker login -u qametaaccess -p $(cat token.txt)
+read -p "Please enter docker login token to access Qameta's private registry: " SECRET_TOKEN
+
+docker login -u qametaaccess -p ${SECRET_TOKEN}
 
 docker compose pull && docker compose up -d && docker compose logs -f 
