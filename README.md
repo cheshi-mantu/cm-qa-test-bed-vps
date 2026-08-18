@@ -1,3 +1,5 @@
+
+
 # cm-qa-test-bed-vps
 qa test bed with jenkins, selenoid, selenoid-ui on a VPS
 
@@ -12,4 +14,4 @@ I've made it to roll out the test bed on digital ocean, but it should work on an
 5. `chmod +x infra.sh`
 6. `./infra.sh`
 
-During the execution script will ask you for new root's password and we'll create a new user to work with (you remember that working under root is not secure blah-blah-blah).
+During the execution script will ask you for new root's password and new user's password, and we'll create a new user to work with (you remember that working under root is not secure blah-blah-blah).
